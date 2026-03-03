@@ -1,0 +1,41 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Retell Agent Spec Schema",
+    "type": "object",
+    "required": [
+        "agent_name",
+        "voice_style",
+        "system_prompt",
+        "variables",
+        "call_transfer_protocol",
+        "fallback_protocol",
+        "version"
+    ],
+    "properties": {
+        "agent_name": {
+            "type": "string"
+        },
+        "voice_style": {
+            "type": "string"
+        },
+        "system_prompt": {
+            "type": "string"
+        },
+        "variables": {
+            "type": "object"
+        },
+        "call_transfer_protocol": {
+            "type": "object"
+        },
+        "fallback_protocol": {
+            "type": "string"
+        },
+        "version": {
+            "type": "string",
+            "enum": [
+                "v1",
+                "v2"
+            ]
+        }
+    }
+}
