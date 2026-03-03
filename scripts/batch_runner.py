@@ -45,8 +45,11 @@ def run_onboarding_batch():
 
             v2_memo, changes = apply_patch(v1_memo, updates)
 
-            save_v2_account_memo(account_id, v2_memo)
-            save_changelog(account_id, changes)
+            if changes:
+                save_v2_account_memo(account_id, v2_memo)
+                save_changelog(account_id, changes)
+            else:
+                log(f"No updates required for {account_id}, skipping changelog.")
 
     log("Onboarding batch processing complete.")
 

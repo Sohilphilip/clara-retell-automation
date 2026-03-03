@@ -12,3 +12,12 @@
 [2026-03-03 21:10:51] Saved v2 memo for test
 [2026-03-03 21:10:51] Saved changelog for test
 [2026-03-03 21:10:51] Onboarding batch processing complete.
+[2026-03-03 21:17:08] Loaded transcript: ./dataset/demo_calls\demo_test.txt
+[2026-03-03 21:17:08] Extracted memo for account: test
+[2026-03-03 21:17:08] v1 memo already exists for test, skipping overwrite.
+[2026-03-03 21:17:08] v1 agent spec already exists for test, skipping overwrite.
+[2026-03-03 21:17:08] Demo batch processing complete.
+[2026-03-03 21:17:08] Loaded transcript: ./dataset/onboarding_calls\onboarding_test.txt
+[2026-03-03 21:17:08] No changes detected for test, skipping v2 overwrite.
+[2026-03-03 21:17:08] Saved changelog for test
+[2026-03-03 21:17:08] Onboarding batch processing complete.
