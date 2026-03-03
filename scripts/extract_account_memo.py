@@ -136,3 +136,15 @@ def extract_onboarding_updates(transcript_text):
         ]
 
     return updates
+
+def load_existing_v1(account_id):
+    """
+    Load existing v1 memo.
+    """
+    file_path = Path(f"./outputs/accounts/{account_id}/v1/account_memo.json")
+
+    if not file_path.exists():
+        raise FileNotFoundError(f"v1 memo not found for {account_id}")
+
+    with open(file_path, "r", encoding="utf-8") as f:
+        return json.load(f)
