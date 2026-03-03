@@ -5,23 +5,58 @@ from pathlib import Path
 
 def apply_patch(v1_memo, onboarding_updates):
     """
-    Apply onboarding updates without destroying unrelated fields.
-    Returns updated memo and list of changes.
+    Apply onboarding updates safely.
+    - Merge arrays
+    - Merge nested dictionaries
+    - Preserve unrelated fields
+    - Track granular changes
     """
 
+    import copy
     v2_memo = copy.deepcopy(v1_memo)
     changes = []
 
     for key, new_value in onboarding_updates.items():
         old_value = v2_memo.get(key)
 
-        if old_value != new_value:
-            v2_memo[key] = new_value
-            changes.append({
-                "field": key,
-                "old": old_value,
-                "new": new_value
-            })
+        # CASE 1: If value is a list → merge unique values
+        if isinstance(new_value, list):
+            merged = list(set(old_value + new_value)) if old_value else new_value
+            if merged != old_value:
+                v2_memo[key] = merged
+                changes.append({
+                    "field": key,
+                    "old": old_value,
+                    "new": merged
+                })
+
+        # CASE 2: If value is dict → update nested keys only
+        elif isinstance(new_value, dict):
+            updated_dict = old_value.copy() if old_value else {}
+            nested_changes = False
+
+            for sub_key, sub_value in new_value.items():
+                if updated_dict.get(sub_key) != sub_value:
+                    updated_dict[sub_key] = sub_value
+                    nested_changes = True
+
+            if nested_changes:
+                v2_memo[key] = updated_dict
+                changes.append({
+                    "field": key,
+                    "old": old_value,
+                    "new": updated_dict
+                })
+
+        # CASE 3: Primitive replacement
+        else:
+            if old_value != new_value:
+                v2_memo[key] = new_value
+                changes.append({
+                    "field": key,
+                    "old": old_value,
+                    "new": new_value
+                })
 
     return v2_memo, changes
 
