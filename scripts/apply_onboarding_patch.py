@@ -67,6 +67,13 @@ def save_v2_account_memo(account_id, memo_json):
 
     file_path = output_path / "account_memo.json"
 
+    if file_path.exists():
+        with open(file_path, "r", encoding="utf-8") as f:
+            existing = json.load(f)
+        if existing == memo_json:
+            log(f"No changes detected for {account_id}, skipping v2 overwrite.")
+            return
+
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(memo_json, f, indent=2)
 
