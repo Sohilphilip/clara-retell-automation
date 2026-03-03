@@ -9,7 +9,7 @@ def generate_agent_spec(account_memo, version="v1"):
     Injects operational rules directly into prompt.
     """
 
-    company_name = account_memo["company_name"] or "the company"
+    company_name = (account_memo["company_name"] or "the company").rstrip(".")
 
     business_hours = account_memo["business_hours"]
     emergency_definitions = account_memo["emergency_definition"]
@@ -23,13 +23,26 @@ def generate_agent_spec(account_memo, version="v1"):
         else "Emergency definition not explicitly provided"
     )
 
-    business_hours_text = (
-        f"Days: {', '.join(business_hours['days'])}\n"
-        f"Hours: {business_hours['start']} - {business_hours['end']}\n"
-        f"Timezone: {business_hours['timezone']}"
-        if business_hours["days"]
-        else "Business hours not fully specified."
-    )
+    if business_hours["days"]:
+        hours_line = (
+            f"{business_hours['start']} - {business_hours['end']}"
+            if business_hours["start"] and business_hours["end"]
+            else "Hours not specified"
+        )
+
+        timezone_line = (
+            business_hours["timezone"]
+            if business_hours["timezone"]
+            else "Timezone not specified"
+        )
+
+        business_hours_text = (
+            f"Days: {', '.join(business_hours['days'])}\n"
+            f"Hours: {hours_line}\n"
+            f"Timezone: {timezone_line}"
+        )
+    else:
+        business_hours_text = "Business hours not fully specified."
 
     transfer_timeout = transfer_rules.get("timeout_seconds", 30)
     retry_attempts = transfer_rules.get("retry_attempts", 2)
