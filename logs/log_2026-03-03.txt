@@ -1,0 +1,5 @@
+[2026-03-03 20:55:30] Loaded transcript: ./dataset/demo_calls\demo_test.txt
+[2026-03-03 20:55:30] Extracted memo for account: test
+[2026-03-03 20:55:30] Saved v1 memo for test
+[2026-03-03 20:55:30] Saved v1 agent spec for test
+[2026-03-03 20:55:30] Demo batch processing complete.

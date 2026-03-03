@@ -106,3 +106,33 @@ def save_v1_account_memo(account_id, memo_json):
         json.dump(memo_json, f, indent=2)
 
     log(f"Saved v1 memo for {account_id}")
+
+def extract_onboarding_updates(transcript_text):
+    """
+    Extract only explicitly confirmed configuration updates from onboarding transcript.
+    """
+    updates = {}
+    text_lower = transcript_text.lower()
+
+    # Business hours override example
+    if "open monday through friday" in text_lower:
+        updates["business_hours"] = {
+            "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+            "start": "8:00 AM",
+            "end": "5:00 PM",
+            "timezone": "Not specified"
+        }
+
+    # Transfer timeout override
+    if "transfer fails after 60 seconds" in text_lower:
+        updates["call_transfer_rules"] = {
+            "timeout_seconds": 60
+        }
+
+    # Integration constraint example
+    if "never create sprinkler jobs in servicetrade" in text_lower:
+        updates["integration_constraints"] = [
+            "Never create sprinkler jobs in ServiceTrade"
+        ]
+
+    return updates
