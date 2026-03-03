@@ -72,3 +72,15 @@
 [2026-03-03 22:16:31] No changes detected for test, skipping v2 overwrite.
 [2026-03-03 22:16:31] No file update required for test, skipping changelog.
 [2026-03-03 22:16:31] Onboarding batch processing complete.
+[2026-03-03 22:25:47] Loaded transcript: ./dataset/demo_calls\demo_test.txt
+[2026-03-03 22:25:47] Extracted memo for account: test
+[2026-03-03 22:25:47] test v1 Account Memo passed schema validation.
+[2026-03-03 22:25:47] v1 memo already exists for test, skipping overwrite.
+[2026-03-03 22:25:47] test v1 Agent Spec passed schema validation.
+[2026-03-03 22:25:47] Saved v1 agent spec for test
+[2026-03-03 22:25:47] Demo batch processing complete.
+[2026-03-03 22:25:47] Loaded transcript: ./dataset/onboarding_calls\onboarding_test.txt
+[2026-03-03 22:25:47] test v2 Account Memo passed schema validation.
+[2026-03-03 22:25:47] No changes detected for test, skipping v2 overwrite.
+[2026-03-03 22:25:47] No file update required for test, skipping changelog.
+[2026-03-03 22:25:47] Onboarding batch processing complete.
