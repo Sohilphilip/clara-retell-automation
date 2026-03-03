@@ -78,6 +78,7 @@ def save_v2_account_memo(account_id, memo_json):
         json.dump(memo_json, f, indent=2)
 
     log(f"Saved v2 memo for {account_id}")
+    return True
 
 def save_changelog(account_id, changes):
     output_path = Path(f"./outputs/accounts/{account_id}")

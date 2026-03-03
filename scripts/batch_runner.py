@@ -46,8 +46,11 @@ def run_onboarding_batch():
             v2_memo, changes = apply_patch(v1_memo, updates)
 
             if changes:
-                save_v2_account_memo(account_id, v2_memo)
-                save_changelog(account_id, changes)
+                file_written = save_v2_account_memo(account_id, v2_memo)
+                if file_written:
+                    save_changelog(account_id, changes)
+                else:
+                    log(f"No file update required for {account_id}, skipping changelog.")
             else:
                 log(f"No updates required for {account_id}, skipping changelog.")
 
