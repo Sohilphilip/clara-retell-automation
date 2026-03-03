@@ -2,6 +2,7 @@ import os
 import json
 from pathlib import Path
 from utils import log
+from validator import validate_json
 
 
 def load_transcript(file_path):
@@ -90,9 +91,13 @@ def extract_account_memo(transcript_text, account_id):
     return memo
 
 def save_v1_account_memo(account_id, memo_json):
-    """
-    Save v1 memo safely without overwriting.
-    """
+    # Validate before saving
+    validate_json(
+        memo_json,
+        "./schemas/account_memo_schema.json",
+        object_name=f"{account_id} v1 Account Memo"
+    )
+
     output_path = Path(f"./outputs/accounts/{account_id}/v1")
     output_path.mkdir(parents=True, exist_ok=True)
 
