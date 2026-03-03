@@ -36,3 +36,16 @@ def save_v2_account_memo(account_id, memo_json):
         json.dump(memo_json, f, indent=2)
 
     log(f"Saved v2 memo for {account_id}")
+
+def save_changelog(account_id, changes):
+    output_path = Path(f"./outputs/accounts/{account_id}")
+    file_path = output_path / "changes.md"
+
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write("# Changes v1 → v2\n\n")
+        for change in changes:
+            f.write(f"## {change['field']}\n")
+            f.write(f"- Old: {change['old']}\n")
+            f.write(f"- New: {change['new']}\n\n")
+
+    log(f"Saved changelog for {account_id}")
