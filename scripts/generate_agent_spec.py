@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from utils import log
+from validator import validate_json
 
 
 def generate_agent_spec(account_memo, version="v1"):
@@ -51,6 +52,13 @@ AFTER HOURS FLOW:
     return agent_spec
 
 def save_agent_spec(account_id, agent_spec, version="v1"):
+    # Validate before saving
+    validate_json(
+        agent_spec,
+        "./schemas/agent_spec_schema.json",
+        object_name=f"{account_id} {version} Agent Spec"
+    )
+
     output_path = Path(f"./outputs/accounts/{account_id}/{version}")
     output_path.mkdir(parents=True, exist_ok=True)
 
