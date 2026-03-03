@@ -10,7 +10,6 @@ from utils import log
 from extract_account_memo import extract_onboarding_updates, load_existing_v1
 from apply_onboarding_patch import apply_patch, save_v2_account_memo, save_changelog
 
-
 DEMO_FOLDER = "./dataset/demo_calls"
 
 

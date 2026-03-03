@@ -2,7 +2,8 @@ version: "3"
 
 services:
   n8n:
-    image: n8nio/n8n
+    image: n8nio/n8n:latest
+    container_name: clara_n8n
     restart: always
     ports:
       - "5678:5678"
@@ -11,6 +12,7 @@ services:
       - N8N_HOST=localhost
       - N8N_PORT=5678
       - NODE_ENV=production
+      - NODES_EXCLUDE="[]"
     volumes:
       - ./n8n_data:/home/node/.n8n
       - ./:/workspace
