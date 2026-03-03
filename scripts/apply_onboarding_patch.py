@@ -2,6 +2,7 @@ import copy
 from utils import log
 import json
 from pathlib import Path
+from validator import validate_json
 
 def apply_patch(v1_memo, onboarding_updates):
     """
@@ -62,6 +63,13 @@ def apply_patch(v1_memo, onboarding_updates):
 
 
 def save_v2_account_memo(account_id, memo_json):
+    # Validate before saving
+    validate_json(
+    memo_json,
+    "./schemas/account_memo_schema.json",
+    object_name=f"{account_id} v2 Account Memo"
+    )
+
     output_path = Path(f"./outputs/accounts/{account_id}/v2")
     output_path.mkdir(parents=True, exist_ok=True)
 
