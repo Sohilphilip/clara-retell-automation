@@ -1,0 +1,106 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Account Memo Schema",
+    "type": "object",
+    "required": [
+        "account_id",
+        "company_name",
+        "business_hours",
+        "office_address",
+        "services_supported",
+        "emergency_definition",
+        "emergency_routing_rules",
+        "non_emergency_routing_rules",
+        "call_transfer_rules",
+        "integration_constraints",
+        "after_hours_flow_summary",
+        "office_hours_flow_summary",
+        "questions_or_unknowns",
+        "notes"
+    ],
+    "properties": {
+        "account_id": {
+            "type": "string"
+        },
+        "company_name": {
+            "type": "string"
+        },
+        "business_hours": {
+            "type": "object",
+            "required": [
+                "days",
+                "start",
+                "end",
+                "timezone"
+            ],
+            "properties": {
+                "days": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "start": {
+                    "type": "string"
+                },
+                "end": {
+                    "type": "string"
+                },
+                "timezone": {
+                    "type": "string"
+                }
+            }
+        },
+        "office_address": {
+            "type": "string"
+        },
+        "services_supported": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "emergency_definition": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "emergency_routing_rules": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "non_emergency_routing_rules": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "call_transfer_rules": {
+            "type": "object"
+        },
+        "integration_constraints": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "after_hours_flow_summary": {
+            "type": "string"
+        },
+        "office_hours_flow_summary": {
+            "type": "string"
+        },
+        "questions_or_unknowns": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "notes": {
+            "type": "string"
+        }
+    }
+}
