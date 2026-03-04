@@ -135,98 +135,75 @@ def extract_account_memo(transcript_text, account_id):
     Falls back to rule-based extraction if needed.
     """
 
+    transcript_text = transcript_text[:6000]
+
     prompt = f"""
-You are a structured data extraction system.
+You are extracting structured business information from a sales demo call transcript.
 
-Your job is to extract operational configuration details about a contractor's
-business from a demo call transcript.
+The conversation contains BOTH:
+1) Clara AI demo discussion
+2) Information about the contractor's business
 
-The transcript includes both:
-1) Information about the contractor's business
-2) A product demo of Clara AI
+Only extract the contractor's business information.
 
-You MUST extract ONLY the contractor's business information.
-
-IGNORE:
-- Clara product explanation
-- AI demo
+Ignore:
+- Clara product explanations
+- AI capabilities
 - pricing discussion
-- onboarding logistics
-- meeting scheduling
-- contract paperwork
-- internal Clara team details
+- sales pitch
+- onboarding steps
 
-Only capture details about the contractor's business operations.
+--------------------------------------
 
---------------------------------------------------
+Extraction rules:
 
-EXTRACTION RULES
+- Only extract information explicitly stated in the conversation.
+- Do NOT guess missing information.
+- If something is not mentioned, leave it empty.
+- Do NOT write explanations like "not mentioned".
 
-1. ONLY extract information explicitly stated in the transcript.
-2. DO NOT guess or infer missing information.
-3. If a field cannot be determined, leave it empty and add a note in
-   "questions_or_unknowns".
-4. Prefer short factual entries over long explanations.
+--------------------------------------
 
---------------------------------------------------
-
-FIELD GUIDELINES
+Extract the following fields if mentioned:
 
 company_name:
 Name of the contractor business.
 
-business_hours:
-Only fill if explicitly stated.
-
-office_address:
-Physical business location if mentioned.
-
 services_supported:
-Types of electrical work or services the contractor performs
-(e.g. EV chargers, troubleshooting, panel changes, etc).
+List ALL electrical services mentioned.
 
-emergency_definition:
-Situations considered urgent or emergency service requests.
-
-emergency_routing_rules:
-How emergency calls should be handled or routed.
-
-non_emergency_routing_rules:
-How regular service calls should be handled.
-
-call_transfer_rules:
-Rules about transferring calls to staff.
+Examples:
+- service calls
+- troubleshooting
+- EV charger installation
+- hot tub wiring
+- panel upgrades
+- renovations
+- tenant improvements
+- residential electrical work
+- commercial electrical work
 
 integration_constraints:
-Software systems currently used by the business
-(example: Jobber CRM).
+Software systems used by the company.
+Example: Jobber CRM.
+
+emergency_definition:
+Only include if emergencies are clearly defined.
 
 after_hours_flow_summary:
-Short description of how calls should be handled after hours.
-
-office_hours_flow_summary:
-Short description of how calls should be handled during business hours.
+How after-hours calls are handled.
 
 notes:
-Any important operational details about the business.
+Operational details such as:
+- years of experience
+- number of vans
+- subcontractors
+- hiring plans
+- business growth plans
 
---------------------------------------------------
+--------------------------------------
 
-OUTPUT REQUIREMENTS
-
-Return ONLY a valid JSON object.
-
-Do NOT include:
-- explanations
-- markdown
-- comments
-- text before or after the JSON
-
-The response MUST start with {{ and end with }}.
-
---------------------------------------------------
-
-OUTPUT SCHEMA
+Return ONLY valid JSON using this schema:
 
 {{
   "account_id": "{account_id}",
@@ -250,31 +227,33 @@ OUTPUT SCHEMA
   "notes": ""
 }}
 
---------------------------------------------------
+--------------------------------------
 
-TRANSCRIPT
-
+Transcript:
 {transcript_text}
 """
 
     try:
 
         response = requests.post(
-        "http://localhost:11434/api/generate",
-        json={
-            "model": "phi3:mini",
-            "prompt": prompt,
-            "stream": False,
-            "format": "json",           
-            "options": {
-            "temperature": 0,
-            "num_predict": 800
-            }
-        },
-        timeout=180
+            "http://localhost:11434/api/generate",
+            json={
+                "model": "qwen2.5:7b",
+                "prompt": prompt,
+                "stream": False,
+                "options": {
+                    "temperature": 0,
+                    "num_predict": 2000
+                }
+            },
+            timeout=180
         )
 
         result = response.json()["response"]
+
+        print("\n----- MODEL RESPONSE -----\n")
+        print(result)
+        print("\n--------------------------\n")
 
         result_json = extract_json_from_text(result)
 
@@ -291,7 +270,6 @@ TRANSCRIPT
 
         if isinstance(bh, dict):
 
-            # Map alternate names → schema names
             if "start_time" in bh and not bh.get("start"):
                 bh["start"] = bh["start_time"]
 
@@ -301,14 +279,29 @@ TRANSCRIPT
             if "time_zone" in bh and not bh.get("timezone"):
                 bh["timezone"] = bh["time_zone"]
 
-        # Remove incorrect keys
         bh.pop("start_time", None)
         bh.pop("end_time", None)
         bh.pop("time_zone", None)
 
         memo["business_hours"] = bh
 
-        # Ensure account_id is always correct
+        # Remove duplicates from list fields
+        for field in [
+            "services_supported",
+            "integration_constraints",
+            "emergency_definition"
+        ]:
+            if isinstance(memo.get(field), list):
+                memo[field] = list(set(memo[field]))
+
+        # Clean emergency_definition placeholders
+        memo["emergency_definition"] = [
+            x for x in memo["emergency_definition"]
+            if "not mentioned" not in x.lower()
+            and "not explicitly defined" not in x.lower()
+        ]
+
+        # Ensure account_id is correct
         memo["account_id"] = account_id
 
         log(f"{account_id} memo extracted using Ollama")
@@ -320,7 +313,6 @@ TRANSCRIPT
         log(f"Ollama extraction failed for {account_id}, using fallback rules. Error: {e}")
 
         return fallback_rule_extraction(transcript_text, account_id)
-
 
 def fallback_rule_extraction(transcript_text, account_id):
 

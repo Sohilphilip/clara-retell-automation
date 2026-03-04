@@ -8,14 +8,19 @@
     "timezone": ""
   },
   "office_address": "",
-  "services_supported": [],
+  "services_supported": [
+    "commercial electrical work",
+    "residential electrical work"
+  ],
   "emergency_definition": [],
   "emergency_routing_rules": [],
   "non_emergency_routing_rules": [],
   "call_transfer_rules": {},
-  "integration_constraints": [],
+  "integration_constraints": [
+    "Jobber CRM"
+  ],
   "after_hours_flow_summary": "",
   "office_hours_flow_summary": "",
   "questions_or_unknowns": [],
-  "notes": ""
+  "notes": "Ben has been an electrician for 30 years, running his own business for the last 8 years. He currently has 2 company vans and plans to have 3 by the end of the week. He has 2 subcontractors and aims to have 5 vans on the road by the end of the year. He uses a software called Jobber for CRM and admin tasks."
 }
