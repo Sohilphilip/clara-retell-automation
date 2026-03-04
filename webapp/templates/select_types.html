@@ -2,45 +2,89 @@
 <html>
 
 <head>
+
     <title>Select Transcript Types</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f5f6fa;
+        }
+
+        .container {
+            width: 700px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 18px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 4px;
+        }
+    </style>
+
 </head>
 
 <body>
 
-    <h2>Select Transcript Type</h2>
+    <div class="container">
 
-    <form action="/process_uploads" method="post">
+        <h2>Select Transcript Type</h2>
 
-        <table border="1">
+        <form action="/process_uploads" method="post">
 
-            <tr>
-                <th>Filename</th>
-                <th>Type</th>
-            </tr>
+            <table>
 
-            {% for file in filenames %}
+                <tr>
+                    <th>File</th>
+                    <th>Type</th>
+                </tr>
 
-            <tr>
-                <td>{{ file }}</td>
+                {% for file in filenames %}
 
-                <td>
-                    <select name="{{ file }}">
-                        <option value="demo">Demo</option>
-                        <option value="onboarding">Onboarding</option>
-                    </select>
-                </td>
+                <tr>
 
-            </tr>
+                    <td>{{file}}</td>
 
-            {% endfor %}
+                    <td>
 
-        </table>
+                        <select name="{{file}}">
+                            <option value="demo">Demo</option>
+                            <option value="onboarding">Onboarding</option>
+                        </select>
 
-        <br>
+                    </td>
 
-        <button type="submit">Process Files</button>
+                </tr>
 
-    </form>
+                {% endfor %}
+
+            </table>
+
+            <button type="submit">Process Files</button>
+
+        </form>
+
+    </div>
 
 </body>
 

@@ -2,33 +2,98 @@
 <html>
 
 <head>
-    <title>Clara Pipeline Dashboard</title>
 
-    <!-- Auto refresh every 5 seconds -->
+    <title>Clara Dashboard</title>
+
     <meta http-equiv="refresh" content="5">
 
     <style>
         body {
             font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+        }
+
+        .container {
+            width: 1000px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .top-links {
+            margin-bottom: 20px;
+        }
+
+        .top-links a {
+            margin-right: 20px;
+            text-decoration: none;
+            color: #333;
         }
 
         table {
+            width: 100%;
             border-collapse: collapse;
-            width: 80%;
         }
 
         th,
         td {
-            padding: 8px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
             text-align: center;
         }
 
         th {
-            background-color: #f2f2f2;
+            background: #f2f2f2;
         }
 
-        a {
-            text-decoration: none;
+        .status {
+            font-weight: bold;
+        }
+
+        .processing {
+            color: #ff9800;
+        }
+
+        .completed {
+            color: #4CAF50;
+        }
+
+        .demo {
+            color: #2196F3;
+        }
+
+        .processing-list {
+            background: #fafafa;
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 20px;
         }
     </style>
 
@@ -36,89 +101,106 @@
 
 <body>
 
-    <h2>Clara AI Pipeline Dashboard</h2>
+    <div class="container">
 
-    <p>
-        <a href="/">Upload Transcript</a> |
-        <a href="/logs">View Pipeline Logs</a>
-    </p>
+        <h1>Clara AI Pipeline Dashboard</h1>
 
-    <h3>Currently Processing</h3>
+        <div class="top-links">
+            <a href="/">Upload Transcripts</a>
+            <a href="/logs">View Logs</a>
+        </div>
 
-    {% if processing_files %}
-    <ul>
-        {% for f in processing_files %}
-        <li>{{ f }}</li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>No files currently processing</p>
-    {% endif %}
+        <h3>Currently Processing</h3>
 
-    <table border="1">
+        <div class="processing-list">
 
-        <tr>
-            <th>Account</th>
-            <th>Status</th>
-            <th>v1 Memo</th>
-            <th>v1 Agent</th>
-            <th>v2 Memo</th>
-            <th>v2 Agent</th>
-            <th>Changelog</th>
-        </tr>
+            {% if processing_files %}
 
-        {% for acc in accounts %}
+            <ul>
 
-        <tr>
+                {% for f in processing_files %}
 
-            <td>{{ acc.account }}</td>
-            <td>{{ acc.status }}</td>
+                <li>
+                    <span class="loader"></span>
+                    &nbsp; {{ f }}
+                </li>
 
-            <td>
-                {% if acc.v1_memo %}
-                <a href="/view/{{acc.account}}/v1/memo">View</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
+                {% endfor %}
 
-            <td>
-                {% if acc.v1_agent %}
-                <a href="/view/{{acc.account}}/v1/agent">View</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
+            </ul>
 
-            <td>
-                {% if acc.v2_memo %}
-                <a href="/view/{{acc.account}}/v2/memo">View</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
+            {% else %}
 
-            <td>
-                {% if acc.v2_agent %}
-                <a href="/view/{{acc.account}}/v2/agent">View</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
+            <p>No files currently processing</p>
 
-            <td>
-                {% if acc.changes %}
-                <a href="/view/{{acc.account}}/v1/changes">View</a>
-                {% else %}
-                -
-                {% endif %}
-            </td>
+            {% endif %}
 
-        </tr>
+        </div>
 
-        {% endfor %}
+        <table>
 
-    </table>
+            <tr>
+                <th>Account</th>
+                <th>Status</th>
+                <th>v1 Memo</th>
+                <th>v1 Agent</th>
+                <th>v2 Memo</th>
+                <th>v2 Agent</th>
+                <th>Changelog</th>
+            </tr>
+
+            {% for acc in accounts %}
+
+            <tr>
+
+                <td>{{ acc.account }}</td>
+
+                <td class="status
+{% if acc.status == 'Completed' %}completed
+{% elif acc.status == 'Demo Processed' %}demo
+{% else %}processing{% endif %}">
+
+                    {{ acc.status }}
+
+                </td>
+
+                <td>
+                    {% if acc.v1_memo %}
+                    <a href="/view/{{acc.account}}/v1/memo">View</a>
+                    {% else %}-{% endif %}
+                </td>
+
+                <td>
+                    {% if acc.v1_agent %}
+                    <a href="/view/{{acc.account}}/v1/agent">View</a>
+                    {% else %}-{% endif %}
+                </td>
+
+                <td>
+                    {% if acc.v2_memo %}
+                    <a href="/view/{{acc.account}}/v2/memo">View</a>
+                    {% else %}-{% endif %}
+                </td>
+
+                <td>
+                    {% if acc.v2_agent %}
+                    <a href="/view/{{acc.account}}/v2/agent">View</a>
+                    {% else %}-{% endif %}
+                </td>
+
+                <td>
+                    {% if acc.changes %}
+                    <a href="/view/{{acc.account}}/v1/changes">View</a>
+                    {% else %}-{% endif %}
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+    </div>
 
 </body>
 

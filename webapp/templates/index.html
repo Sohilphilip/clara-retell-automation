@@ -3,25 +3,75 @@
 
 <head>
     <title>Clara AI Pipeline</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+        }
+
+        .container {
+            width: 600px;
+            margin: 80px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+        }
+
+        input[type=file] {
+            margin: 20px 0;
+        }
+
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        a {
+            display: block;
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+
 </head>
 
 <body>
 
-    <h2>Upload Transcripts</h2>
+    <div class="container">
 
-    <form action="/upload" method="post" enctype="multipart/form-data">
+        <h1>Clara AI Pipeline</h1>
 
-        <input type="file" name="transcripts" multiple accept=".txt,.docx,.pdf">
+        <form action="/upload" method="post" enctype="multipart/form-data">
 
-        <br><br>
+            <p>Select one or more transcript files</p>
 
-        <button type="submit">Upload Files</button>
+            <input type="file" name="transcripts" multiple accept=".txt,.docx,.pdf" required>
 
-    </form>
+            <br>
 
-    <br>
+            <button type="submit">Upload Files</button>
 
-    <a href="/dashboard">View Dashboard</a>
+        </form>
+
+        <a href="/dashboard">Open Dashboard</a>
+
+    </div>
 
 </body>
 
