@@ -1,0 +1,214 @@
+{
+  "name": "clara_pipeline_onboarding_calls_v2",
+  "nodes": [
+    {
+      "parameters": {
+        "triggerOn": "folder",
+        "path": "/workspace/dataset/onboarding_calls",
+        "events": [
+          "add"
+        ],
+        "options": {
+          "usePolling": true
+        }
+      },
+      "type": "n8n-nodes-base.localFileTrigger",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        208
+      ],
+      "id": "e7963464-58af-4f14-9fc7-c5cbc59d9478",
+      "name": "Local File Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8000/run-batch",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -432,
+        320
+      ],
+      "id": "91153fdc-2369-44c5-a624-acd699dcc0c0",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0e55f631-19f8-4236-97c3-fe6eada11efb",
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -224,
+        320
+      ],
+      "id": "39d4361d-f403-4ca7-bb3b-0173c772af7f",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e7cec196-762d-48bc-9575-f54a67f7b9a5",
+              "name": "error",
+              "value": "=Batch execution failed",
+              "type": "string"
+            },
+            {
+              "id": "d42b53d3-88e6-412b-af7b-7330dfdc3558",
+              "name": "stderr",
+              "value": "={{ $json.stderr }}",
+              "type": "string"
+            },
+            {
+              "id": "ec59a40c-d747-421f-abb9-41cb9d6f2d44",
+              "name": "returncode",
+              "value": "={{ $json.returncode }}",
+              "type": "number"
+            },
+            {
+              "id": "4f061559-a8b4-4736-ae65-0f5d6516f696",
+              "name": "",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        336
+      ],
+      "id": "581ca06f-9fec-4517-b2c0-529000405034",
+      "name": "Batch Failed"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8c3d05ae-7fe1-402d-91e5-13bd1323d30d",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "command": "=mv -f \"{{$json.path}}\" /workspace/processed/onboarding_calls/"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "5509b668-8282-4548-8b72-0e61d60c742d",
+      "name": "Execute Command"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Local File Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ],
+        [
+          {
+            "node": "Batch Failed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3ce97e4a-8652-42eb-a248-5d2421adb31b",
+  "meta": {
+    "instanceId": "6089b1654196917c135792bd70e7fec76dcc5139b6554f599e79b3a105601f85"
+  },
+  "id": "nKeJ5AGY5qMPErc6",
+  "tags": []
+}

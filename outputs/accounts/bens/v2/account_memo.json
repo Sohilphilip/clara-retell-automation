@@ -1,6 +1,6 @@
 {
-  "account_id": "test",
-  "company_name": "Test Fire Protection.",
+  "account_id": "bens",
+  "company_name": "",
   "business_hours": {
     "days": [
       "Monday",
@@ -15,14 +15,15 @@
   },
   "office_address": "",
   "services_supported": [],
-  "emergency_definition": [
-    "Sprinkler leak",
-    "Fire alarm triggered"
-  ],
+  "emergency_definition": [],
   "emergency_routing_rules": [],
   "non_emergency_routing_rules": [],
-  "call_transfer_rules": {},
-  "integration_constraints": [],
+  "call_transfer_rules": {
+    "timeout_seconds": 60
+  },
+  "integration_constraints": [
+    "Uses Jobber CRM"
+  ],
   "after_hours_flow_summary": "",
   "office_hours_flow_summary": "",
   "questions_or_unknowns": [],

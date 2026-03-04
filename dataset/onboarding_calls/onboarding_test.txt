@@ -1,5 +1,0 @@
-We are open Monday through Friday 8:00 AM to 5:00 PM.
-
-If transfer fails after 60 seconds dispatch must be notified.
-
-Never create sprinkler jobs in ServiceTrade.

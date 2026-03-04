@@ -1,0 +1,116 @@
+Speaker 1: 00:00
+Hey Ben, thanks for joining the onboarding call today. Now that you've decided to move forward with Clara, we just want to finalize how the AI receptionist should behave for your business.
+
+Speaker 2: 00:09
+Sounds good. I'm excited to see how this works.
+
+Speaker 1: 00:14
+Great. First let's confirm the basic company information. Your company is Ben’s Electric Solutions, correct?
+
+Speaker 2: 00:20
+Yes that's right.
+
+Speaker 1: 00:23
+And you're based in Calgary, Alberta?
+
+Speaker 2: 00:26
+Yes.
+
+Speaker 1: 00:28
+Perfect. Let's talk about business hours. When should the AI consider your office open?
+
+Speaker 2: 00:33
+We're generally open Monday through Friday from 8 AM to 5 PM Mountain Time.
+
+Speaker 1: 00:40
+Great. So calls during those hours can be treated as standard service requests.
+
+Speaker 2: 00:44
+Exactly.
+
+Speaker 1: 00:47
+Now let's talk about after-hours calls. Do you want Clara to handle those differently?
+
+Speaker 2: 00:52
+Yes. After hours I still want it to answer the phone, but most calls should just be scheduled for the next business day.
+
+Speaker 1: 01:01
+Understood. Are there any situations that should be treated as emergencies?
+
+Speaker 2: 01:06
+Only a few. If it's one of my regular property managers with gas stations and their pumps go down, that's an emergency. Otherwise we usually don't take emergency weekend work.
+
+Speaker 1: 01:18
+So for most callers after hours, Clara should collect their details and schedule a follow-up during business hours.
+
+Speaker 2: 01:23
+Yes that's right.
+
+Speaker 1: 01:26
+And for emergencies from known contractors or property managers?
+
+Speaker 2: 01:30
+Those should be transferred directly to me.
+
+Speaker 1: 01:34
+Perfect. Let's talk about call transfers. If Clara needs to transfer a call to you, how long should it try before falling back?
+
+Speaker 2: 01:41
+Maybe try for about 60 seconds. If I don't answer by then just take a message.
+
+Speaker 1: 01:47
+Got it. And if the transfer fails, Clara should collect the caller's name, phone number, and a short description of the issue.
+
+Speaker 2: 01:54
+Yes exactly.
+
+Speaker 1: 01:57
+Now regarding services. From the demo call we noted you handle things like service calls, troubleshooting, EV chargers, hot tub hookups, panel changes, and general electrical work.
+
+Speaker 2: 02:07
+Yes that's all correct.
+
+Speaker 1: 02:10
+Are there any jobs you definitely do NOT want Clara to accept?
+
+Speaker 2: 02:14
+Yeah we stopped doing gemstone lighting installs. If someone calls about that we should politely decline.
+
+Speaker 1: 02:21
+Perfect. We'll configure that.
+
+Speaker 1: 02:24
+Next question: what software do you use for managing jobs?
+
+Speaker 2: 02:28
+I use Jobber as my CRM.
+
+Speaker 1: 02:31
+Great. We'll make sure Clara does not attempt to automatically create jobs in external systems until that integration is confirmed.
+
+Speaker 2: 02:38
+Yeah that's probably best.
+
+Speaker 1: 02:41
+When Clara collects call information, should it always capture name, phone number, and address?
+
+Speaker 2: 02:46
+Yes those are the basics I need before I quote anything.
+
+Speaker 1: 02:50
+And for larger projects like renovations or new homes, should Clara schedule a site visit instead of booking a job?
+
+Speaker 2: 02:57
+Exactly. If it's a big job it should schedule an estimate.
+
+Speaker 1: 03:01
+Perfect. Last question — if Clara receives spam or sales calls?
+
+Speaker 2: 03:05
+Just end the call politely.
+
+Speaker 1: 03:08
+Great. That's everything we need to configure your system. We'll use this information to finalize your Clara setup.
+
+Speaker 2: 03:13
+Sounds good. Looking forward to trying it.

@@ -1,18 +1,34 @@
-version: "3"
+version: "3.8"
 
 services:
   n8n:
     image: n8nio/n8n:latest
     container_name: clara_n8n
     restart: always
+
     ports:
       - "5678:5678"
+
     environment:
       - N8N_BASIC_AUTH_ACTIVE=false
       - N8N_HOST=localhost
       - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_EDITOR_BASE_URL=http://localhost:5678
       - NODE_ENV=production
-      - NODES_EXCLUDE="[]"
+      - NODES_EXCLUDE=[]
+      - N8N_SKIP_WEBHOOK_DEREGISTRATION_SHUTDOWN=true
+
     volumes:
       - ./n8n_data:/home/node/.n8n
       - ./:/workspace
+      - ./workflows:/workflows
+
+    working_dir: /workspace
+
+    # command: >
+    #   sh -c "
+    #   n8n import:workflow --input=/workflows/clara_pipeline_v1_demo_calls.json --separate &&
+    #   n8n import:workflow --input=/workflows/clara_pipeline_onboarding_calls_v2.json --separate &&
+    #   n8n start
+    #   "

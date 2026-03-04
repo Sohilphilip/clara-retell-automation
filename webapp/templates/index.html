@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Clara AI Pipeline</title>
+</head>
+
+<body>
+
+    <h2>Upload Transcript</h2>
+
+    <form action="/upload" method="post" enctype="multipart/form-data">
+
+        <label>Transcript File:</label>
+        <br>
+        <input type="file" name="transcript" required>
+        <br><br>
+
+        <label>Transcript Type:</label>
+        <br>
+
+        <select name="type">
+            <option value="demo">Demo Call</option>
+            <option value="onboarding">Onboarding Call</option>
+        </select>
+
+        <br><br>
+
+        <button type="submit">Upload</button>
+
+    </form>
+
+    <br>
+
+    <a href="/dashboard">View Dashboard</a>
+
+</body>
+
+</html>

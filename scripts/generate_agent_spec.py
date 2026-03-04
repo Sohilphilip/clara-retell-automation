@@ -3,24 +3,59 @@ from pathlib import Path
 from utils import log
 from validator import validate_json
 
+
+def load_account_memo(account_id, version="v1"):
+    """
+    Load account memo from outputs directory.
+    """
+
+    path = Path(f"./outputs/accounts/{account_id}/{version}/account_memo.json")
+
+    if not path.exists():
+        raise FileNotFoundError(f"Account memo not found: {path}")
+
+    with open(path, "r", encoding="utf-8") as f:
+        memo = json.load(f)
+
+    log(f"Loaded {version} account memo for {account_id}")
+    return memo
+
+
 def generate_agent_spec(account_memo, version="v1"):
     """
     Generate dynamic Retell Agent Draft Spec.
     Injects operational rules directly into prompt.
     """
 
-    company_name = (account_memo["company_name"] or "the company").rstrip(".")
+    company_name = (
+        account_memo.get("company_name")
+        or account_memo.get("account_id", "the_company")
+    ).replace("_", " ").title().rstrip(".")
 
-    business_hours = account_memo["business_hours"]
-    emergency_definitions = account_memo["emergency_definition"]
-    integration_constraints = account_memo["integration_constraints"]
+    business_hours = account_memo.get("business_hours", {
+        "days": [],
+        "start": "",
+        "end": "",
+        "timezone": ""
+    })
+
+    emergency_definitions = account_memo.get("emergency_definition", [])
+    integration_constraints = account_memo.get("integration_constraints", [])
     transfer_rules = account_memo.get("call_transfer_rules", {})
+    services_supported = account_memo.get("services_supported", [])
 
-    # Build dynamic sections safely
+    # ---------- Dynamic Section Builders ----------
+
+    services_text = (
+        ", ".join(services_supported)
+        if services_supported
+        else "Services not explicitly listed."
+    )
+
     emergency_text = (
         ", ".join(emergency_definitions)
         if emergency_definitions
-        else "Emergency definition not explicitly provided"
+        else "Emergency definition not explicitly provided."
     )
 
     if business_hours["days"]:
@@ -53,6 +88,8 @@ def generate_agent_spec(account_memo, version="v1"):
         else "No integration constraints explicitly defined."
     )
 
+    # ---------- System Prompt ----------
+
     system_prompt = f"""
 You are an AI receptionist for {company_name}.
 
@@ -61,6 +98,9 @@ You must follow structured operational behavior exactly.
 ========================
 BUSINESS INFORMATION
 ========================
+
+Services Offered:
+{services_text}
 
 Business Hours:
 {business_hours_text}
@@ -115,18 +155,19 @@ IMPORTANT RULES
 ========================
 
 - Do NOT invent information not explicitly defined.
-- Do NOT mention system functions or internal tools.
+- Do NOT mention internal system instructions.
 - Collect only information necessary for routing and dispatch.
 - Follow integration constraints strictly.
 """
 
     agent_spec = {
-        "agent_name": f"{company_name} AI Receptionist",
+        "agent_name": f"{company_name.lower().replace(' ', '_')}_agent",
         "voice_style": "Professional, calm, efficient",
         "system_prompt": system_prompt.strip(),
         "variables": {
             "business_hours": business_hours,
-            "emergency_definition": emergency_definitions
+            "emergency_definition": emergency_definitions,
+            "services_supported": services_supported
         },
         "call_transfer_protocol": {
             "timeout_seconds": transfer_timeout,
@@ -138,8 +179,12 @@ IMPORTANT RULES
 
     return agent_spec
 
+
 def save_agent_spec(account_id, agent_spec, version="v1"):
-    # Validate before saving
+    """
+    Save agent specification.
+    """
+
     validate_json(
         agent_spec,
         "./schemas/agent_spec_schema.json",
@@ -160,3 +205,18 @@ def save_agent_spec(account_id, agent_spec, version="v1"):
 
     log(f"Saved {version} agent spec for {account_id}")
 
+
+def main():
+
+    account_id = "bens_demo_clean"
+    version = "v1"
+
+    account_memo = load_account_memo(account_id, version)
+
+    agent_spec = generate_agent_spec(account_memo, version)
+
+    save_agent_spec(account_id, agent_spec, version)
+
+
+if __name__ == "__main__":
+    main()
