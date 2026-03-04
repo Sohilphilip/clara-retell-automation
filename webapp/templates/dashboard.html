@@ -43,6 +43,31 @@
             }
         }
 
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .step {
+            text-align: center;
+            flex: 1;
+        }
+
+        .step-box {
+            background: #ffffff;
+            border: 2px solid #4CAF50;
+            border-radius: 6px;
+            padding: 10px;
+            font-size: 14px;
+        }
+
+        .arrow {
+            font-size: 20px;
+            margin: 0 5px;
+        }
+
         h1 {
             margin-bottom: 20px;
         }
@@ -104,6 +129,52 @@
     <div class="container">
 
         <h1>Clara AI Pipeline Dashboard</h1>
+
+        <h3>Pipeline Overview</h3>
+
+        <div class="pipeline">
+
+            <div class="step">
+                <div class="step-box">Upload Transcript</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">File Stored</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">n8n Trigger</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">AI Processing (Ollama)</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">Generate Account Memo</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">Generate Agent Spec</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="step">
+                <div class="step-box">Versioned Output (v1 / v2)</div>
+            </div>
+
+        </div>
 
         <div class="top-links">
             <a href="/">Upload Transcripts</a>
