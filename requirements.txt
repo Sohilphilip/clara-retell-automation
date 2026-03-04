@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+requests
+jsonschema
+python-docx
+PyPDF2
+flask
