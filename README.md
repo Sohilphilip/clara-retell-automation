@@ -1,4 +1,9 @@
-# Clara AI Retell Automation
+# Clara AI Retell Automation 
+### Name - Sohil S Philip
+### Email - sohilphilip137@gmail.com
+### Phone : +91 7683039177
+### Neo Id : NEO691479
+### College Registration : 22BCE10358
 
 ## Overview
 
