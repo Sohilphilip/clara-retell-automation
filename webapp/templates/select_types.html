@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Select Transcript Types</title>
+</head>
+
+<body>
+
+    <h2>Select Transcript Type</h2>
+
+    <form action="/process_uploads" method="post">
+
+        <table border="1">
+
+            <tr>
+                <th>Filename</th>
+                <th>Type</th>
+            </tr>
+
+            {% for file in filenames %}
+
+            <tr>
+                <td>{{ file }}</td>
+
+                <td>
+                    <select name="{{ file }}">
+                        <option value="demo">Demo</option>
+                        <option value="onboarding">Onboarding</option>
+                    </select>
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </table>
+
+        <br>
+
+        <button type="submit">Process Files</button>
+
+    </form>
+
+</body>
+
+</html>

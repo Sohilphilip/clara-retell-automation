@@ -7,9 +7,11 @@ app = Flask(__name__)
 BASE_DIR = Path("../dataset")
 DEMO_DIR = BASE_DIR / "demo_calls"
 ONBOARDING_DIR = BASE_DIR / "onboarding_calls"
+TEMP_DIR = BASE_DIR / "temp_uploads"
 
 DEMO_DIR.mkdir(parents=True, exist_ok=True)
 ONBOARDING_DIR.mkdir(parents=True, exist_ok=True)
+TEMP_DIR.mkdir(parents=True, exist_ok=True)
 
 
 @app.route("/")
@@ -17,23 +19,48 @@ def index():
     return render_template("index.html")
 
 
+# STEP 1: Upload files to temp folder
 @app.route("/upload", methods=["POST"])
 def upload_file():
 
-    transcript = request.files.get("transcript")
-    transcript_type = request.form.get("type")
+    files = request.files.getlist("transcripts")
 
-    if not transcript:
-        return "No file uploaded", 400
+    if not files:
+        return "No files uploaded", 400
 
-    filename = transcript.filename
+    filenames = []
 
-    if transcript_type == "demo":
-        save_path = DEMO_DIR / filename
-    else:
-        save_path = ONBOARDING_DIR / filename
+    for transcript in files:
 
-    transcript.save(save_path)
+        filename = transcript.filename
+
+        if not filename:
+            continue
+
+        save_path = TEMP_DIR / filename
+        transcript.save(save_path)
+
+        filenames.append(filename)
+
+    return render_template("select_types.html", filenames=filenames)
+
+
+# STEP 2: Move files to correct dataset folders
+@app.route("/process_uploads", methods=["POST"])
+def process_uploads():
+
+    for filename in os.listdir(TEMP_DIR):
+
+        filetype = request.form.get(filename)
+
+        src = TEMP_DIR / filename
+
+        if filetype == "demo":
+            dst = DEMO_DIR / filename
+        else:
+            dst = ONBOARDING_DIR / filename
+
+        src.rename(dst)
 
     return redirect(url_for("dashboard"))
 

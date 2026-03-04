@@ -7,26 +7,15 @@
 
 <body>
 
-    <h2>Upload Transcript</h2>
+    <h2>Upload Transcripts</h2>
 
     <form action="/upload" method="post" enctype="multipart/form-data">
 
-        <label>Transcript File:</label>
-        <br>
-        <input type="file" name="transcript" required>
-        <br><br>
-
-        <label>Transcript Type:</label>
-        <br>
-
-        <select name="type">
-            <option value="demo">Demo Call</option>
-            <option value="onboarding">Onboarding Call</option>
-        </select>
+        <input type="file" name="transcripts" multiple accept=".txt,.docx,.pdf">
 
         <br><br>
 
-        <button type="submit">Upload</button>
+        <button type="submit">Upload Files</button>
 
     </form>
 

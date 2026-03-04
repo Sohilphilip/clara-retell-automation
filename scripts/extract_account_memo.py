@@ -5,17 +5,50 @@ from pathlib import Path
 from utils import log
 from validator import validate_json
 import re
+from docx import Document
 from normalize_transcript import normalize_transcript
+from PyPDF2 import PdfReader
+
 
 def load_transcript(file_path):
     """
-    Load transcript text from file.
+    Load transcript text from .txt, .docx, or .pdf files.
     """
+
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
-            text = normalize_transcript(f.read())
+        path = Path(file_path)
+
+        if path.suffix.lower() == ".txt":
+
+            with open(path, "r", encoding="utf-8") as f:
+                text = f.read()
+
+        elif path.suffix.lower() == ".docx":
+
+            doc = Document(path)
+            text = "\n".join([para.text for para in doc.paragraphs])
+
+        elif path.suffix.lower() == ".pdf":
+
+            reader = PdfReader(path)
+            pages = []
+
+            for page in reader.pages:
+                page_text = page.extract_text()
+                if page_text:
+                    pages.append(page_text)
+
+            text = "\n".join(pages)
+
+        else:
+            raise ValueError(f"Unsupported transcript format: {path.suffix}")
+
+        text = normalize_transcript(text)
+
         log(f"Loaded transcript: {file_path}")
+
         return text
+
     except Exception as e:
         log(f"Error loading transcript {file_path}: {e}")
         raise
