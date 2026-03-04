@@ -9,6 +9,6 @@
 - New: {'timeout_seconds': 60}
 
 ## integration_constraints
-- Old: ['Jobber CRM']
-- New: ['Jobber CRM', 'Uses Jobber CRM']
+- Old: []
+- New: ['Uses Jobber CRM']
 

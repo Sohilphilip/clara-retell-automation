@@ -9,6 +9,25 @@ from docx import Document
 from normalize_transcript import normalize_transcript
 from PyPDF2 import PdfReader
 
+SERVICE_KEYWORDS = [
+    "service call",
+    "repair",
+    "installation",
+    "maintenance",
+    "replacement",
+    "upgrade",
+    "inspection",
+    "renovation",
+    "project"
+]
+
+SERVICE_NORMALIZATION = {
+    "service call": "service calls",
+    "repair": "repair services",
+    "installation": "installation services",
+    "maintenance": "maintenance services",
+    "inspection": "inspection services"
+}
 
 def load_transcript(file_path):
     """
@@ -128,191 +147,303 @@ def create_empty_account_memo(account_id):
         "notes": ""
     }
 
-
-def extract_account_memo(transcript_text, account_id):
+def chunk_text(text, size=2000):
     """
-    Extract structured data using local LLM (Ollama).
-    Falls back to rule-based extraction if needed.
+    Split transcript into smaller chunks for better LLM processing.
     """
+    return [text[i:i + size] for i in range(0, len(text), size)]
 
-    transcript_text = transcript_text[:6000]
+def call_ollama(prompt):
+
+    response = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": "qwen2.5:7b",
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0,
+                "top_p": 0.9,
+                "num_predict": 1200
+            }
+        },
+        timeout=180
+    )
+
+    result = response.json()["response"]
+
+    return extract_json_from_text(result)
+
+
+def summarize_transcript(transcript_text):
 
     prompt = f"""
-You are extracting structured business information from a sales demo call transcript.
+Summarize the contractor's business information from this transcript.
 
-The conversation contains BOTH:
-1) Clara AI demo discussion
-2) Information about the contractor's business
-
-Only extract the contractor's business information.
+Focus only on:
+- services offered
+- business hours
+- emergency rules
+- routing rules
+- software tools used
+- company details
 
 Ignore:
-- Clara product explanations
-- AI capabilities
-- pricing discussion
-- sales pitch
-- onboarding steps
+- product demo discussion
+- sales conversation
+- unrelated chatter
 
---------------------------------------
-
-Extraction rules:
-
-- Only extract information explicitly stated in the conversation.
-- Do NOT guess missing information.
-- If something is not mentioned, leave it empty.
-- Do NOT write explanations like "not mentioned".
-
---------------------------------------
-
-Extract the following fields if mentioned:
-
-company_name:
-Name of the contractor business.
-
-services_supported:
-List ALL electrical services mentioned.
-
-Examples:
-- service calls
-- troubleshooting
-- EV charger installation
-- hot tub wiring
-- panel upgrades
-- renovations
-- tenant improvements
-- residential electrical work
-- commercial electrical work
-
-integration_constraints:
-Software systems used by the company.
-Example: Jobber CRM.
-
-emergency_definition:
-Only include if emergencies are clearly defined.
-
-after_hours_flow_summary:
-How after-hours calls are handled.
-
-notes:
-Operational details such as:
-- years of experience
-- number of vans
-- subcontractors
-- hiring plans
-- business growth plans
-
---------------------------------------
-
-Return ONLY valid JSON using this schema:
-
-{{
-  "account_id": "{account_id}",
-  "company_name": "",
-  "business_hours": {{
-    "days": [],
-    "start": "",
-    "end": "",
-    "timezone": ""
-  }},
-  "office_address": "",
-  "services_supported": [],
-  "emergency_definition": [],
-  "emergency_routing_rules": [],
-  "non_emergency_routing_rules": [],
-  "call_transfer_rules": {{}},
-  "integration_constraints": [],
-  "after_hours_flow_summary": "",
-  "office_hours_flow_summary": "",
-  "questions_or_unknowns": [],
-  "notes": ""
-}}
-
---------------------------------------
+Return a short structured summary.
 
 Transcript:
 {transcript_text}
 """
 
+    response = requests.post(
+        "http://localhost:11434/api/generate",
+        json={
+            "model": "qwen2.5:7b",
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": 0,
+                "num_predict": 800
+            }
+        },
+        timeout=180
+    )
+
+    return response.json()["response"]
+
+def extract_company_info(transcript_text, account_id):
+
+    prompt = f"""
+You are extracting structured information from a contractor demo call transcript.
+
+IMPORTANT RULES:
+1. Only extract information explicitly stated in the transcript.
+2. If information is missing return empty values ("", []).
+3. NEVER write phrases like:
+   - "Not specified"
+   - "Not mentioned"
+   - "Unknown"
+
+Return JSON only.
+
+Schema:
+
+{{
+ "company_name": "",
+ "business_hours": {{
+    "days": [],
+    "start": "",
+    "end": "",
+    "timezone": ""
+ }},
+ "office_address": "",
+ "integration_constraints": [],
+ "notes": ""
+}}
+
+Extract:
+
+company_name:
+Name of the contractor business.
+
+business_hours:
+If mentioned.
+
+office_address:
+City or business location.
+
+integration_constraints:
+Software tools used by the business such as:
+- Jobber
+- ServiceTitan
+- Housecall Pro
+- QuickBooks
+
+notes:
+Important business facts such as:
+- years of experience
+- team size
+- vans
+- subcontractors
+- hiring plans
+
+Transcript:
+{transcript_text}
+"""
+
+    return call_ollama(prompt)
+
+
+
+def extract_services(transcript_text):
+
+    prompt = f"""
+Extract electrical services offered by the contractor.
+
+Example:
+
+Transcript:
+"We do EV charger installs and panel upgrades."
+
+Output:
+{{
+ "services_supported": [
+   "EV charger installation",
+   "panel upgrades"
+ ]
+}}
+
+Return JSON only.
+
+Schema:
+{{
+ "services_supported": []
+}}
+
+Rules:
+- Extract only services mentioned
+- Do not invent services
+- If none found return []
+
+Transcript:
+{transcript_text}
+"""
+
+    return call_ollama(prompt)
+
+
+def extract_emergency_rules(transcript_text):
+
+    prompt = f"""
+Extract emergency situations and emergency call routing rules.
+
+IMPORTANT RULES:
+1. Only extract explicit emergency conditions.
+2. If none mentioned return empty lists.
+3. Do NOT write explanations.
+
+Return JSON only.
+
+Schema:
+
+{{
+ "emergency_definition": [],
+ "emergency_routing_rules": []
+}}
+
+Transcript:
+{transcript_text}
+"""
+
+    return call_ollama(prompt)
+
+
+
+def extract_routing_rules(transcript_text):
+
+    prompt = f"""
+Extract call handling rules for the business.
+
+IMPORTANT RULES:
+1. Only extract rules explicitly stated.
+2. If missing return empty values.
+3. Do NOT write explanations.
+
+Return JSON only.
+
+Schema:
+
+{{
+ "non_emergency_routing_rules": [],
+ "call_transfer_rules": {{}},
+ "after_hours_flow_summary": "",
+ "office_hours_flow_summary": ""
+}}
+
+Transcript:
+{transcript_text}
+"""
+
+    return call_ollama(prompt)
+
+
+def extract_account_memo(transcript_text, account_id):
+
+    transcript_text = transcript_text.replace("\n", " ")
+
+    memo = create_empty_account_memo(account_id)
+
     try:
 
-        response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "qwen2.5:7b",
-                "prompt": prompt,
-                "stream": False,
-                "options": {
-                    "temperature": 0,
-                    "num_predict": 2000
-                }
-            },
-            timeout=180
-        )
+        summary = summarize_transcript(transcript_text)
 
-        result = response.json()["response"]
+        chunks = chunk_text(summary)
 
-        print("\n----- MODEL RESPONSE -----\n")
-        print(result)
-        print("\n--------------------------\n")
+        all_services = []
 
-        result_json = extract_json_from_text(result)
+        # keyword detection first
+        for keyword in SERVICE_KEYWORDS:
+            if keyword in transcript_text.lower():
+                all_services.append(keyword)
 
-        # Start with safe default structure
-        memo = create_empty_account_memo(account_id)
+        # run LLM extraction per chunk
+        for chunk in chunks:
 
-        # Merge only known schema fields
-        for key in memo.keys():
-            if key in result_json:
-                memo[key] = result_json[key]
+            company = extract_company_info(chunk, account_id)
+            services = extract_services(chunk)
+            emergency = extract_emergency_rules(chunk)
+            routing = extract_routing_rules(chunk)
 
-        # Normalize business_hours keys if LLM used different naming
-        bh = memo.get("business_hours", {})
+            sections = [company, services, emergency, routing]
 
-        if isinstance(bh, dict):
+            for section in sections:
+                if isinstance(section, dict):
+                    for key, value in section.items():
+                        if key in memo and value:
 
-            if "start_time" in bh and not bh.get("start"):
-                bh["start"] = bh["start_time"]
+                            if isinstance(value, list):
+                                memo[key].extend(value)
+                            else:
+                                memo[key] = value
 
-            if "end_time" in bh and not bh.get("end"):
-                bh["end"] = bh["end_time"]
+            # collect services
+            if isinstance(services, dict):
+                all_services.extend(services.get("services_supported", []))
 
-            if "time_zone" in bh and not bh.get("timezone"):
-                bh["timezone"] = bh["time_zone"]
+        # merge services
+        memo["services_supported"].extend(all_services)
 
-        bh.pop("start_time", None)
-        bh.pop("end_time", None)
-        bh.pop("time_zone", None)
+        # normalize services
+        normalized = []
 
-        memo["business_hours"] = bh
+        for service in memo["services_supported"]:
 
-        # Remove duplicates from list fields
-        for field in [
-            "services_supported",
-            "integration_constraints",
-            "emergency_definition"
-        ]:
-            if isinstance(memo.get(field), list):
-                memo[field] = list(set(memo[field]))
+            s = service.lower()
 
-        # Clean emergency_definition placeholders
-        memo["emergency_definition"] = [
-            x for x in memo["emergency_definition"]
-            if "not mentioned" not in x.lower()
-            and "not explicitly defined" not in x.lower()
-        ]
+            for key, value in SERVICE_NORMALIZATION.items():
+                if key in s:
+                    s = value
 
-        # Ensure account_id is correct
+            normalized.append(s)
+
+        memo["services_supported"] = list(set(normalized))
+
         memo["account_id"] = account_id
 
-        log(f"{account_id} memo extracted using Ollama")
+        log(f"{account_id} memo extracted using chunked multi-step extraction")
 
         return memo
 
     except Exception as e:
 
-        log(f"Ollama extraction failed for {account_id}, using fallback rules. Error: {e}")
+        log(f"Ollama extraction failed for {account_id}: {e}")
 
         return fallback_rule_extraction(transcript_text, account_id)
+
 
 def fallback_rule_extraction(transcript_text, account_id):
 

@@ -119,3 +119,143 @@
 [2026-03-05 00:45:00] Demo batch processing complete.
 [2026-03-05 00:45:00] Starting onboarding batch processing...
 [2026-03-05 00:45:00] Onboarding batch processing complete.
+[2026-03-05 00:51:45] Starting demo batch processing...
+[2026-03-05 00:51:45] Starting demo batch processing...
+[2026-03-05 00:51:45] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 00:51:45] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 00:53:04] bens memo extracted using multi-step extraction
+[2026-03-05 00:53:04] bens v1 Account Memo passed schema validation.
+[2026-03-05 00:53:04] Saved v1 memo for bens
+[2026-03-05 00:53:04] bens v1 Agent Spec passed schema validation.
+[2026-03-05 00:53:04] Saved v1 agent spec for bens
+[2026-03-05 00:53:04] Demo pipeline complete for bens
+[2026-03-05 00:53:04] Demo batch processing complete.
+[2026-03-05 00:53:04] Starting onboarding batch processing...
+[2026-03-05 00:53:04] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 00:53:04] bens v2 Account Memo passed schema validation.
+[2026-03-05 00:53:04] Saved v2 memo for bens
+[2026-03-05 00:53:04] Saved changelog for bens
+[2026-03-05 00:53:04] bens v2 Agent Spec passed schema validation.
+[2026-03-05 00:53:04] Saved v2 agent spec for bens
+[2026-03-05 00:53:04] Onboarding pipeline complete for bens
+[2026-03-05 00:53:04] Onboarding batch processing complete.
+[2026-03-05 00:53:08] bens memo extracted using multi-step extraction
+[2026-03-05 00:53:08] bens v1 Account Memo passed schema validation.
+[2026-03-05 00:53:08] v1 memo already exists for bens, skipping overwrite.
+[2026-03-05 00:53:08] bens v1 Agent Spec passed schema validation.
+[2026-03-05 00:53:08] v1 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 00:53:08] Demo pipeline complete for bens
+[2026-03-05 00:53:08] Demo batch processing complete.
+[2026-03-05 00:53:08] Starting onboarding batch processing...
+[2026-03-05 00:53:08] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 00:53:08] bens v2 Account Memo passed schema validation.
+[2026-03-05 00:53:08] Saved v2 memo for bens
+[2026-03-05 00:53:08] Saved changelog for bens
+[2026-03-05 00:53:08] bens v2 Agent Spec passed schema validation.
+[2026-03-05 00:53:08] v2 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 00:53:08] Onboarding pipeline complete for bens
+[2026-03-05 00:53:08] Onboarding batch processing complete.
+[2026-03-05 01:00:49] Starting demo batch processing...
+[2026-03-05 01:00:49] Starting demo batch processing...
+[2026-03-05 01:00:49] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:00:49] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:02:15] bens memo extracted using multi-step extraction
+[2026-03-05 01:02:15] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:02:15] Saved v1 memo for bens
+[2026-03-05 01:02:15] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:02:15] Saved v1 agent spec for bens
+[2026-03-05 01:02:15] Demo pipeline complete for bens
+[2026-03-05 01:02:15] Demo batch processing complete.
+[2026-03-05 01:02:15] Starting onboarding batch processing...
+[2026-03-05 01:02:15] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:02:15] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:02:15] Saved v2 memo for bens
+[2026-03-05 01:02:15] Saved changelog for bens
+[2026-03-05 01:02:15] bens v2 Agent Spec passed schema validation.
+[2026-03-05 01:02:15] Saved v2 agent spec for bens
+[2026-03-05 01:02:15] Onboarding pipeline complete for bens
+[2026-03-05 01:02:15] Onboarding batch processing complete.
+[2026-03-05 01:02:16] bens memo extracted using multi-step extraction
+[2026-03-05 01:02:16] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:02:16] v1 memo already exists for bens, skipping overwrite.
+[2026-03-05 01:02:16] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:02:16] v1 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 01:02:16] Demo pipeline complete for bens
+[2026-03-05 01:02:16] Demo batch processing complete.
+[2026-03-05 01:02:16] Starting onboarding batch processing...
+[2026-03-05 01:02:16] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:02:16] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:02:16] Saved v2 memo for bens
+[2026-03-05 01:02:16] Saved changelog for bens
+[2026-03-05 01:02:16] bens v2 Agent Spec passed schema validation.
+[2026-03-05 01:02:16] v2 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 01:02:16] Onboarding pipeline complete for bens
+[2026-03-05 01:02:16] Onboarding batch processing complete.
+[2026-03-05 01:11:41] Starting demo batch processing...
+[2026-03-05 01:11:41] Starting demo batch processing...
+[2026-03-05 01:11:41] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:11:41] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:12:42] Ollama extraction failed for bens: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001DE77BF14F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+[2026-03-05 01:12:42] Fallback rule extraction applied for bens
+[2026-03-05 01:12:42] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:12:42] Saved v1 memo for bens
+[2026-03-05 01:12:42] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:12:42] Saved v1 agent spec for bens
+[2026-03-05 01:12:42] Demo pipeline complete for bens
+[2026-03-05 01:12:42] Demo batch processing complete.
+[2026-03-05 01:12:42] Starting onboarding batch processing...
+[2026-03-05 01:12:42] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:12:42] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:12:42] Saved v2 memo for bens
+[2026-03-05 01:12:42] Saved changelog for bens
+[2026-03-05 01:12:42] bens v2 Agent Spec passed schema validation.
+[2026-03-05 01:12:42] Saved v2 agent spec for bens
+[2026-03-05 01:12:42] Onboarding pipeline complete for bens
+[2026-03-05 01:12:42] Onboarding batch processing complete.
+[2026-03-05 01:12:43] Ollama extraction failed for bens: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/generate (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000021656DB14F0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))
+[2026-03-05 01:12:43] Fallback rule extraction applied for bens
+[2026-03-05 01:12:43] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:12:43] v1 memo already exists for bens, skipping overwrite.
+[2026-03-05 01:12:43] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:12:43] v1 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 01:12:43] Demo pipeline complete for bens
+[2026-03-05 01:12:43] Demo batch processing complete.
+[2026-03-05 01:12:43] Starting onboarding batch processing...
+[2026-03-05 01:12:43] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:12:43] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:12:43] No changes detected for bens, skipping v2 overwrite.
+[2026-03-05 01:12:43] No file update required for bens, skipping changelog and agent spec.
+[2026-03-05 01:12:43] Onboarding batch processing complete.
+[2026-03-05 01:18:27] Starting demo batch processing...
+[2026-03-05 01:18:27] Starting demo batch processing...
+[2026-03-05 01:18:27] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:18:27] Loaded transcript: ./dataset/demo_calls\bens demo.txt
+[2026-03-05 01:20:52] bens memo extracted using chunked multi-step extraction
+[2026-03-05 01:20:52] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:20:52] Saved v1 memo for bens
+[2026-03-05 01:20:52] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:20:52] Saved v1 agent spec for bens
+[2026-03-05 01:20:52] Demo pipeline complete for bens
+[2026-03-05 01:20:52] Demo batch processing complete.
+[2026-03-05 01:20:52] Starting onboarding batch processing...
+[2026-03-05 01:20:52] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:20:52] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:20:52] Saved v2 memo for bens
+[2026-03-05 01:20:52] Saved changelog for bens
+[2026-03-05 01:20:52] bens v2 Agent Spec passed schema validation.
+[2026-03-05 01:20:52] Saved v2 agent spec for bens
+[2026-03-05 01:20:52] Onboarding pipeline complete for bens
+[2026-03-05 01:20:52] Onboarding batch processing complete.
+[2026-03-05 01:20:52] bens memo extracted using chunked multi-step extraction
+[2026-03-05 01:20:52] bens v1 Account Memo passed schema validation.
+[2026-03-05 01:20:52] v1 memo already exists for bens, skipping overwrite.
+[2026-03-05 01:20:52] bens v1 Agent Spec passed schema validation.
+[2026-03-05 01:20:52] v1 agent spec already exists for bens, skipping overwrite.
+[2026-03-05 01:20:52] Demo pipeline complete for bens
+[2026-03-05 01:20:52] Demo batch processing complete.
+[2026-03-05 01:20:52] Starting onboarding batch processing...
+[2026-03-05 01:20:52] Loaded transcript: ./dataset/onboarding_calls\bens onboarding.txt
+[2026-03-05 01:20:52] bens v2 Account Memo passed schema validation.
+[2026-03-05 01:20:52] No changes detected for bens, skipping v2 overwrite.
+[2026-03-05 01:20:52] No file update required for bens, skipping changelog and agent spec.
+[2026-03-05 01:20:52] Onboarding batch processing complete.
